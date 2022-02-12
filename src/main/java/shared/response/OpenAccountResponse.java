@@ -16,7 +16,7 @@ public class OpenAccountResponse extends ResponseBody {
         return new OpenAccountResponse(0, false, errorMessage);
     }
 
-    public static OpenAccountResponse success(int accountNumber, boolean status){
+    public static OpenAccountResponse success(int accountNumber){
         return new OpenAccountResponse(accountNumber, true, "");
     }
 
