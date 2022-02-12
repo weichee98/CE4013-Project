@@ -14,13 +14,19 @@ public class AccountInfo {
         this.accountNum = accountNum;
         this.holderName = holderName;
         this.password = checkPassword(password);
-        this.currency = currency;
+        this.currency = checkCurrency(currency);
         this.balance = balance;
     }
 
     public static void main(String[] args) throws Exception {
         AccountInfo aci = new AccountInfo(123, "abc", "12345678", Currency.valueOf("USD"), 10.0F);
         System.out.println(aci);
+    }
+
+    public Currency checkCurrency(Currency currency) throws Exception {
+        if (currency == null)
+            throw new Exception("Currency not supported");
+        return currency;
     }
 
     public int getAccountNum() {
