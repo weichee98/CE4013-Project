@@ -13,6 +13,18 @@ public enum Currency {
         this.name = name;
     }
 
+    public byte toByte() {
+        return (byte) this.ordinal();
+    }
+
+    public static Currency fromByte(byte currencyByte) {
+        try {
+            return Currency.values()[currencyByte];
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     @Override
     public String toString() {
         return this.name;
