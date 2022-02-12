@@ -15,10 +15,6 @@ public enum RequestType {
         }
     }
 
-    public byte toByte() {
-        return (byte) this.ordinal();
-    }
-
     public static RequestType fromByte(byte idByte) {
         return RequestType.get(idByte);
     }
@@ -26,5 +22,9 @@ public enum RequestType {
     public static void main(String[] args) {
         System.out.println(RequestType.get(3));
         System.out.println(RequestType.get(10));
+    }
+
+    public byte toByte() {
+        return (byte) this.ordinal();
     }
 }
