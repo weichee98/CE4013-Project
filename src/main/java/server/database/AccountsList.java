@@ -26,17 +26,17 @@ public class AccountsList {
         return db;
     }
 
-    public boolean delete(Integer accountNum, String password){
+    public void delete(Integer accountNum, String password, String holderName) throws Exception {
         if (db.get(accountNum) == null){
-            System.out.printf("Account %d does not exist%n", accountNum);
-            return false;
+            throw new Exception(String.format("Account %d does not exist%n", accountNum));
+        }
+        else if  (!Objects.equals(db.get(accountNum).getHolderName(), holderName)){
+            throw new Exception("Name does not match account number");
         }
         else if (!Objects.equals(db.get(accountNum).getPassword(), password)){
-            System.out.println("Wrong password");
-            return false;
+            throw new Exception("Wrong password");
         }
         this.db.remove(accountNum);
-        return true;
     }
 
     @Override
@@ -55,8 +55,8 @@ public class AccountsList {
         acl.add(i1, aci);
         acl.add(i2, aci2);
         System.out.println(acl);
-        acl.delete(aci.getAccountNum(), "12345678");
-        acl.delete(aci2.getAccountNum(), "12443");
+        acl.delete(aci.getAccountNum(), "12345678", "abc");
+        acl.delete(aci2.getAccountNum(), "12443", "abc");
         System.out.println(acl);
     }
 }
