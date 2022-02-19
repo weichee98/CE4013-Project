@@ -2,7 +2,7 @@ package main.java.shared.udp;
 
 import java.net.SocketAddress;
 
-public class UDPMessage {
+public class UDPMessage implements AutoCloseable {
     private final SocketAddress address;
     private final byte[] bytes;
 
@@ -18,4 +18,7 @@ public class UDPMessage {
     public byte[] getBytes() {
         return this.bytes;
     }
+
+    @Override
+    public void close() {}
 }
