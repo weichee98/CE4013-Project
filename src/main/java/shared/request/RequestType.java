@@ -1,6 +1,7 @@
 package main.java.shared.request;
 
 public enum RequestType {
+    INVALID,
     OPEN_ACCOUNT,
     CLOSE_ACCOUNT,
     DEPOSIT,

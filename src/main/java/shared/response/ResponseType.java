@@ -1,6 +1,7 @@
 package main.java.shared.response;
 
 public enum ResponseType {
+    INVALID,
     OPEN_ACCOUNT,
     CLOSE_ACCOUNT,
     DEPOSIT,
