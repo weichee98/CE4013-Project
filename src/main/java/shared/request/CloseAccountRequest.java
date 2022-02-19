@@ -33,7 +33,6 @@ public class CloseAccountRequest extends RequestBody {
         String password = new String(
                 Arrays.copyOfRange(bytes, ptr, passwordEnd)
         );
-        ptr = passwordEnd + 1;
 
         return new CloseAccountRequest(
                 accountNumber,
@@ -89,7 +88,6 @@ public class CloseAccountRequest extends RequestBody {
         System.arraycopy(
                 passwordByte, 0, bytes, ptr, passwordByte.length
         );
-        ptr += passwordByte.length;
 
         return bytes;
     }
