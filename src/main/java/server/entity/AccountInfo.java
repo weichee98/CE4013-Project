@@ -98,7 +98,6 @@ public class AccountInfo {
         return "AccountInfo{" +
                 "accountNum = " + accountNum +
                 ", holderName = '" + holderName + '\'' +
-                ", password = '" + password + '\'' +
                 ", currency = " + currency +
                 ", balance = " + balance +
                 '}';

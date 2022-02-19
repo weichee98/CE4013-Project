@@ -24,7 +24,7 @@ public class QueryAccountResponse extends ResponseBody {
         return new QueryAccountResponse(false, errorMessage, 0, "", Currency.ZZZ, 0F);
     }
 
-    public static QueryAccountResponse success(int accountNumber, String holderName, String password, Currency currency, float balance) {
+    public static QueryAccountResponse success(int accountNumber, String holderName, Currency currency, float balance) {
         return new QueryAccountResponse(true, "", accountNumber, holderName, currency, balance);
     }
 
