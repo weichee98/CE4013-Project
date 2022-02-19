@@ -4,35 +4,36 @@ import java.util.Arrays;
 
 public class Request {
     private final RequestHeader header;
-    private final RequestBody body;
+    private final byte[] reqBodyBytes;
 
-    public Request(RequestHeader header, RequestBody body) {
+    public Request(RequestHeader header, byte[] reqBodyBytes) {
         this.header = header;
-        this.body = body;
+        this.reqBodyBytes = reqBodyBytes;
     }
 
-    public static RequestHeader getHeaderFromBytes(byte[] bytes) {
-        return RequestHeader.fromBytes(Arrays.copyOfRange(bytes, 0, RequestHeader.totalBytes));
-    }
-
-    public static byte[] getRequestBodyBytes(byte[] bytes, int bodyLength) {
-        return Arrays.copyOfRange(bytes, RequestHeader.totalBytes, RequestHeader.totalBytes + bodyLength);
+    public static Request fromBytes(byte[] bytes) {
+        RequestHeader header = RequestHeader.fromBytes(
+                Arrays.copyOfRange(bytes, 0, RequestHeader.totalBytes)
+        );
+        byte[] reqBodyBytes = Arrays.copyOfRange(
+                bytes, RequestHeader.totalBytes, RequestHeader.totalBytes + header.getBodyLength()
+        );
+        return new Request(header, reqBodyBytes);
     }
 
     public RequestHeader getHeader() {
         return this.header;
     }
 
-    public RequestBody getBody() {
-        return this.body;
+    public byte[] getReqBodyBytes() {
+        return this.reqBodyBytes;
     }
 
     public byte[] toBytes() {
         byte[] headerBytes = this.header.toBytes();
-        byte[] bodyBytes = this.body.toBytes();
-        byte[] bytes = new byte[headerBytes.length + bodyBytes.length];
+        byte[] bytes = new byte[headerBytes.length + this.reqBodyBytes.length];
         System.arraycopy(headerBytes, 0, bytes, 0, headerBytes.length);
-        System.arraycopy(bodyBytes, 0, bytes, headerBytes.length, bodyBytes.length);
+        System.arraycopy(this.reqBodyBytes, 0, bytes, headerBytes.length, this.reqBodyBytes.length);
         return bytes;
     }
 }
