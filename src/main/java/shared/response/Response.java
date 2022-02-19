@@ -11,6 +11,14 @@ public class Response {
         this.body = body;
     }
 
+    public static ResponseHeader getHeaderFromBytes(byte[] bytes) {
+        return ResponseHeader.fromBytes(Arrays.copyOfRange(bytes, 0, ResponseHeader.totalBytes));
+    }
+
+    public static byte[] getResponseBodyBytes(byte[] bytes, int bodyLength) {
+        return Arrays.copyOfRange(bytes, ResponseHeader.totalBytes, ResponseHeader.totalBytes + bodyLength);
+    }
+
     public ResponseHeader getHeader() {
         return this.header;
     }
@@ -26,13 +34,5 @@ public class Response {
         System.arraycopy(headerBytes, 0, bytes, 0, headerBytes.length);
         System.arraycopy(bodyBytes, 0, bytes, headerBytes.length, bodyBytes.length);
         return bytes;
-    }
-
-    public static ResponseHeader getHeaderFromBytes(byte[] bytes) {
-        return ResponseHeader.fromBytes(Arrays.copyOfRange(bytes, 0, ResponseHeader.totalBytes));
-    }
-
-    public static byte[] getResponseBodyBytes(byte[] bytes) {
-        return Arrays.copyOfRange(bytes, ResponseHeader.totalBytes, bytes.length);
     }
 }

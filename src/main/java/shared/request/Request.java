@@ -11,6 +11,14 @@ public class Request {
         this.body = body;
     }
 
+    public static RequestHeader getHeaderFromBytes(byte[] bytes) {
+        return RequestHeader.fromBytes(Arrays.copyOfRange(bytes, 0, RequestHeader.totalBytes));
+    }
+
+    public static byte[] getRequestBodyBytes(byte[] bytes, int bodyLength) {
+        return Arrays.copyOfRange(bytes, RequestHeader.totalBytes, RequestHeader.totalBytes + bodyLength);
+    }
+
     public RequestHeader getHeader() {
         return this.header;
     }
@@ -26,13 +34,5 @@ public class Request {
         System.arraycopy(headerBytes, 0, bytes, 0, headerBytes.length);
         System.arraycopy(bodyBytes, 0, bytes, headerBytes.length, bodyBytes.length);
         return bytes;
-    }
-
-    public static RequestHeader getHeaderFromBytes(byte[] bytes) {
-        return RequestHeader.fromBytes(Arrays.copyOfRange(bytes, 0, RequestHeader.totalBytes));
-    }
-
-    public static byte[] getRequestBodyBytes(byte[] bytes) {
-        return Arrays.copyOfRange(bytes, RequestHeader.totalBytes, bytes.length);
     }
 }
