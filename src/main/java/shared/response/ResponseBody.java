@@ -9,5 +9,13 @@ public abstract class ResponseBody {
         this.errorMessage = errorMessage;
     }
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
     public abstract byte[] toBytes();
 }
