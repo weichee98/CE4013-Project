@@ -10,7 +10,13 @@ public class AccountInfo {
     private Currency currency;
     private float balance;
 
-    public AccountInfo(int accountNum, String holderName, String password, Currency currency, float balance) throws Exception {
+    public AccountInfo(
+            int accountNum,
+            String holderName,
+            String password,
+            Currency currency,
+            float balance
+    ) throws Exception {
         this.accountNum = accountNum;
         this.holderName = holderName;
         this.password = checkPassword(password);
@@ -19,7 +25,13 @@ public class AccountInfo {
     }
 
     public static void main(String[] args) throws Exception {
-        AccountInfo aci = new AccountInfo(123, "abc", "12345678", Currency.valueOf("USD"), 10.0F);
+        AccountInfo aci = new AccountInfo(
+                123,
+                "abc",
+                "12345678",
+                Currency.valueOf("USD"),
+                10.0F
+        );
         System.out.println(aci);
     }
 
@@ -55,7 +67,12 @@ public class AccountInfo {
 
     private String checkPassword(String password) throws Exception {
         if (password.length() != PASSWORDLENGTH)
-            throw new Exception(String.format("The password length must be %d. Input password is of length %d", PASSWORDLENGTH, password.length()));
+            throw new Exception(
+                    String.format(
+                            "The password length must be %d. Input password is of length %d",
+                            PASSWORDLENGTH, password.length()
+                    )
+            );
         else
             return password;
     }
