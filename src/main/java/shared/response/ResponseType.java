@@ -6,8 +6,8 @@ public enum ResponseType {
     CLOSE_ACCOUNT,
     DEPOSIT,
     WITHDRAW,
-    MONITOR,
-    UPDATES;
+    SUBSCRIBE_STATUS,
+    SUBSCRIBE_UPDATE;
 
     public static ResponseType get(int id) {
         try {

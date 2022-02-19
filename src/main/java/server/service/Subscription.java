@@ -37,7 +37,7 @@ public class Subscription {
         SubscribeMessageResponse respBody = new SubscribeMessageResponse(message);
         byte[] respBodyBytes = respBody.toBytes();
         ResponseHeader header = new ResponseHeader(
-                UUID.randomUUID(), ResponseType.UPDATES, respBodyBytes.length
+                UUID.randomUUID(), ResponseType.SUBSCRIBE_UPDATE, respBodyBytes.length
         );
         Response resp = new Response(header, respBodyBytes);
         byte[] responseBytes = resp.toBytes();
