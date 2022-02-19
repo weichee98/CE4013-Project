@@ -7,7 +7,6 @@ import main.java.shared.request.*;
 import main.java.shared.response.*;
 
 import java.net.SocketAddress;
-import java.util.Objects;
 
 public class BankServices {
     private final AccountsList db = new AccountsList();
@@ -71,18 +70,11 @@ public class BankServices {
 
         try {
             AccountInfo accountInfo = db.getAccountInfo(accountNumber);
-            if (accountInfo == null)
-                throw new Exception("Account number does not exists");
-            else if (!Objects.equals(accountInfo.getHolderName(), holderName))
-                throw new Exception("Account holder name does not match");
-            else if (!Objects.equals(accountInfo.getPassword(), password))
-                throw new Exception("Wrong password");
-            else if (accountInfo.getCurrency() != currency)
-                throw new Exception("Currency to deposit/withdraw does not match with currency in account ");
-
-            float newBalance = accountInfo.getBalance() + amount;
-            if (newBalance < 0)
-                throw new Exception("Insufficient balance");
+            accountInfo.validatePassword(password);
+            accountInfo.validateHolderName(holderName);
+            accountInfo.validateCurrency(currency);
+            accountInfo.checkEnoughBalance(amount);
+            float newBalance = accountInfo.getBalance() - amount;
             accountInfo.setBalance(newBalance);
 
             this.subscription.broadcastMessage(
@@ -100,12 +92,8 @@ public class BankServices {
         String password = req.getPassword();
         try {
             AccountInfo accountInfo = db.getAccountInfo(accountNumber);
-            if (accountInfo == null)
-                throw new Exception("Account number does not exists");
-            else if (!Objects.equals(accountInfo.getHolderName(), holderName))
-                throw new Exception("Account holder name does not match");
-            else if (!Objects.equals(accountInfo.getPassword(), password))
-                throw new Exception("Wrong password");
+            accountInfo.validatePassword(password);
+            accountInfo.validateHolderName(holderName);
 
             this.subscription.broadcastMessage(
                     String.format("Account information %s", accountInfo)
@@ -116,5 +104,41 @@ public class BankServices {
         }
     }
 
-    
+    public TransferResponse transfer(TransferRequest req) {
+        int accountNumber = req.getAccountNumber();
+        String holderName = req.getHolderName();
+        String password = req.getPassword();
+        int targetAccountNumber = req.getTargetAccountNumber();
+        String targetHolderName = req.getTargetHolderName();
+        Currency currency = req.getCurrency();
+        float amount = req.getAmount();
+
+        try {
+            if (amount <= 0) throw new Exception("Transfer amount must be greater than 0");
+
+            AccountInfo accountInfo = db.getAccountInfo(accountNumber);
+            accountInfo.validatePassword(password);
+            accountInfo.validateHolderName(holderName);
+            accountInfo.validateCurrency(currency);
+            accountInfo.checkEnoughBalance(-amount);
+            float newBalance = accountInfo.getBalance() - amount;
+            accountInfo.setBalance(newBalance);
+
+            AccountInfo targetAccountInfo = db.getAccountInfo(targetAccountNumber);
+            targetAccountInfo.validateHolderName(targetHolderName);
+            if (currency != targetAccountInfo.getCurrency())
+                throw new Exception(String.format("Recipient does not have account in currency %s", currency));
+            targetAccountInfo.setBalance(targetAccountInfo.getBalance() + amount);
+
+            TransferResponse resp = TransferResponse.success(accountNumber, holderName, targetAccountNumber, targetHolderName, currency, amount);
+
+            this.subscription.broadcastMessage(
+                    String.format("Transaction completed %s", resp)
+            );
+            return resp;
+
+        } catch (Exception e) {
+            return TransferResponse.error(e.getMessage());
+        }
+    }
 }

@@ -2,6 +2,8 @@ package main.java.server.entity;
 
 import main.java.shared.entity.Currency;
 
+import java.util.Objects;
+
 public class AccountInfo {
     private static final int PASSWORDLENGTH = 8;
     private int accountNum;
@@ -32,7 +34,26 @@ public class AccountInfo {
                 Currency.valueOf("USD"),
                 10.0F
         );
-        System.out.println(aci);
+    }
+
+    public void validateHolderName(String holderName) throws Exception {
+        if (!Objects.equals(getHolderName(), holderName))
+            throw new Exception(String.format("Account holder name does not match account %d", getAccountNum()));
+    }
+
+    public void validatePassword(String password) throws Exception {
+        if (!Objects.equals(getPassword(), password))
+            throw new Exception("Wrong password");
+    }
+
+    public void validateCurrency(Currency currency) throws Exception {
+        if (!Objects.equals(getCurrency(), currency))
+            throw new Exception(String.format("Account is not in currency : %s", getCurrency()));
+    }
+
+    public void checkEnoughBalance(float amount) throws Exception {
+        if (getBalance() + amount < 0)
+            throw new Exception("Insufficient balance");
     }
 
     public Currency checkCurrency(Currency currency) throws Exception {

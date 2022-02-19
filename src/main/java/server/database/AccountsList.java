@@ -25,8 +25,8 @@ public class AccountsList {
         acl.add(i2, aci2);
         System.out.println(acl);
         acl.delete(aci.getAccountNum(), "12345678", "abc");
-        acl.delete(aci2.getAccountNum(), "12443", "abc");
         System.out.println(acl);
+        System.out.println(acl.getAccountInfo(1));
     }
 
     public int generateAccountNum() {
@@ -41,20 +41,17 @@ public class AccountsList {
     }
 
     public AccountInfo delete(int accountNum, String password, String holderName) throws Exception {
-        if (db.get(accountNum) == null) {
-            throw new Exception(String.format("Account %d does not exist%n", accountNum));
-        } else if (!Objects.equals(db.get(accountNum).getHolderName(), holderName)) {
-            throw new Exception("Name does not match account number");
-        } else if (!Objects.equals(db.get(accountNum).getPassword(), password)) {
-            throw new Exception("Wrong password");
-        }
-        AccountInfo accInfo = this.db.get(accountNum);
+        AccountInfo accountInfo = this.getAccountInfo(accountNum);
+        accountInfo.validatePassword(password);
+        accountInfo.validateHolderName(holderName);
         this.db.remove(accountNum);
-        return accInfo;
+        return accountInfo;
     }
 
-    public AccountInfo getAccountInfo(int accountNum) {
-        return this.db.getOrDefault(accountNum, null);
+    public AccountInfo getAccountInfo(int accountNum) throws Exception {
+        AccountInfo aci =  this.db.getOrDefault(accountNum, null);
+        if (aci == null) throw new Exception(String.format("Account %d does not exist", accountNum));
+        else return aci;
     }
 
     @Override
