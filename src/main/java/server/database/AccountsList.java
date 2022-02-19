@@ -41,16 +41,11 @@ public class AccountsList {
     }
 
     public AccountInfo delete(int accountNum, String password, String holderName) throws Exception {
-        if (db.get(accountNum) == null) {
-            throw new Exception(String.format("Account %d does not exist%n", accountNum));
-        } else if (!Objects.equals(db.get(accountNum).getHolderName(), holderName)) {
-            throw new Exception("Name does not match account number");
-        } else if (!Objects.equals(db.get(accountNum).getPassword(), password)) {
-            throw new Exception("Wrong password");
-        }
-        AccountInfo accInfo = this.db.get(accountNum);
+        AccountInfo accountInfo = this.getAccountInfo(accountNum);
+        accountInfo.validatePassword(password);
+        accountInfo.validateHolderName(holderName);
         this.db.remove(accountNum);
-        return accInfo;
+        return accountInfo;
     }
 
     public AccountInfo getAccountInfo(int accountNum) throws Exception {
