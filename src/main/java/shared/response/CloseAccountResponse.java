@@ -9,19 +9,19 @@ public class CloseAccountResponse extends ResponseBody {
     private final int accountNumber;
     private final String holderName;
 
-    
-    private CloseAccountResponse(int accountNumber, boolean status, String errorMessage, String holderName) {
+
+    private CloseAccountResponse(boolean status, String errorMessage, int accountNumber, String holderName) {
         super(status, errorMessage);
         this.accountNumber = accountNumber;
         this.holderName = holderName;
     }
 
     public static CloseAccountResponse error(String errorMessage) {
-        return new CloseAccountResponse(0, false, errorMessage, "");
+        return new CloseAccountResponse(false, errorMessage, 0, "");
     }
 
     public static CloseAccountResponse success(int accountNumber, String holderName) {
-        return new CloseAccountResponse(accountNumber, true, "", holderName);
+        return new CloseAccountResponse(true, "", accountNumber, holderName);
     }
 
     public static CloseAccountResponse fromBytes(byte[] bytes) {
@@ -39,11 +39,11 @@ public class CloseAccountResponse extends ResponseBody {
         int holderNameEnd = Tools.findEndOfString(bytes, ptr);
         String holderName = new String(Arrays.copyOfRange(bytes, ptr, holderNameEnd));
 
-        return new CloseAccountResponse(accountNumber, status, errorMessage, holderName);
+        return new CloseAccountResponse(status, errorMessage, accountNumber, holderName);
     }
 
     public static void main(String[] args) {
-        CloseAccountResponse c = new CloseAccountResponse(123, true, "fjdifjdff", "abc");
+        CloseAccountResponse c = new CloseAccountResponse(true, "fjdifjdff", 123, "abc");
         byte[] bytes = c.toBytes();
         System.out.println(Arrays.toString(bytes));
         System.out.println(CloseAccountResponse.fromBytes(bytes));
@@ -55,14 +55,6 @@ public class CloseAccountResponse extends ResponseBody {
 
     public String getHolderName() {
         return holderName;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
     }
 
     @Override
