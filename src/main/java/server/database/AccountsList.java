@@ -40,7 +40,7 @@ public class AccountsList {
         this.db.put(accountNum, accountInfo);
     }
 
-    public void delete(int accountNum, String password, String holderName) throws Exception {
+    public AccountInfo delete(int accountNum, String password, String holderName) throws Exception {
         if (db.get(accountNum) == null) {
             throw new Exception(String.format("Account %d does not exist%n", accountNum));
         } else if (!Objects.equals(db.get(accountNum).getHolderName(), holderName)) {
@@ -48,7 +48,9 @@ public class AccountsList {
         } else if (!Objects.equals(db.get(accountNum).getPassword(), password)) {
             throw new Exception("Wrong password");
         }
+        AccountInfo accInfo = this.db.get(accountNum);
         this.db.remove(accountNum);
+        return accInfo;
     }
 
     @Override
