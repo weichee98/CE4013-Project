@@ -18,4 +18,5 @@ public abstract class ResponseBody {
     }
 
     public abstract byte[] toBytes();
+    public abstract int getBodyLength();
 }
