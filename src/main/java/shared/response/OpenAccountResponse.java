@@ -14,11 +14,11 @@ public class OpenAccountResponse extends ResponseBody {
     }
 
     public static OpenAccountResponse error(String errorMessage) {
-        return new OpenAccountResponse(true, errorMessage, 0);
+        return new OpenAccountResponse(false, errorMessage, 0);
     }
 
     public static OpenAccountResponse success(int accountNumber) {
-        return new OpenAccountResponse(false, "", accountNumber);
+        return new OpenAccountResponse(true, "", accountNumber);
     }
 
     public static OpenAccountResponse fromBytes(byte[] bytes) {
