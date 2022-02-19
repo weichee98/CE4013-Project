@@ -3,14 +3,8 @@ package main.java.server.service;
 import main.java.server.database.AccountsList;
 import main.java.server.entity.AccountInfo;
 import main.java.shared.entity.Currency;
-import main.java.shared.request.CloseAccountRequest;
-import main.java.shared.request.DepositAndWithdrawRequest;
-import main.java.shared.request.OpenAccountRequest;
-import main.java.shared.request.SubscribeRequest;
-import main.java.shared.response.CloseAccountResponse;
-import main.java.shared.response.DepositAndWithdrawResponse;
-import main.java.shared.response.OpenAccountResponse;
-import main.java.shared.response.SubscribeStatusResponse;
+import main.java.shared.request.*;
+import main.java.shared.response.*;
 
 import java.net.SocketAddress;
 import java.util.Objects;
@@ -100,4 +94,27 @@ public class BankServices {
         }
     }
 
+    public QueryAccountResponse queryAccount(QueryAccountRequest req) {
+        int accountNumber = req.getAccountNumber();
+        String holderName = req.getHolderName();
+        String password = req.getPassword();
+        try {
+            AccountInfo accountInfo = db.getAccountInfo(accountNumber);
+            if (accountInfo == null)
+                throw new Exception("Account number does not exists");
+            else if (!Objects.equals(accountInfo.getHolderName(), holderName))
+                throw new Exception("Account holder name does not match");
+            else if (!Objects.equals(accountInfo.getPassword(), password))
+                throw new Exception("Wrong password");
+
+            this.subscription.broadcastMessage(
+                    String.format("Account information %s", accountInfo)
+            );
+            return QueryAccountResponse.success(accountNumber, holderName, accountInfo.getCurrency(), accountInfo.getBalance());
+        } catch (Exception e) {
+            return QueryAccountResponse.error(e.getMessage());
+        }
+    }
+
+    
 }
