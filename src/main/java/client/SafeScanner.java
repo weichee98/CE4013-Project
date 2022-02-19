@@ -15,7 +15,7 @@ public class SafeScanner {
         }
     }
 
-    public static double readFloat(String message) {
+    public static float readFloat(String message) {
         try {
             System.out.print(message);
             return Float.parseFloat(reader.nextLine());
