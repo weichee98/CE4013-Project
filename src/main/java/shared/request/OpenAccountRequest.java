@@ -2,7 +2,7 @@ package main.java.shared.request;
 
 import main.java.shared.entity.Currency;
 
-public class OpenAccountRequest extends RequestBody{
+public class OpenAccountRequest extends RequestBody {
     private final String holderName;
     private final String password;
     private final Currency currency;
@@ -13,6 +13,22 @@ public class OpenAccountRequest extends RequestBody{
         this.password = password;
         this.currency = currency;
         this.balance = balance;
+    }
+
+    public String getHolderName() {
+        return holderName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public float getBalance() {
+        return balance;
     }
 
     @Override

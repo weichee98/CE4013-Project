@@ -1,6 +1,6 @@
 package main.java.shared.request;
 
-public class CloseAccountRequest extends RequestBody{
+public class CloseAccountRequest extends RequestBody {
     private final int accountNumber;
     private final String holderName;
     private final String password;
@@ -10,6 +10,18 @@ public class CloseAccountRequest extends RequestBody{
         this.holderName = holderName;
         this.password = password;
         this.accountNumber = accountNumber;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getHolderName() {
+        return holderName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
