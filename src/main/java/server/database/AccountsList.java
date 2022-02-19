@@ -53,6 +53,10 @@ public class AccountsList {
         return accInfo;
     }
 
+    public AccountInfo getAccountInfo(int accountNum) {
+        return this.db.getOrDefault(accountNum, null);
+    }
+
     @Override
     public String toString() {
         return "AccountsList{" +
