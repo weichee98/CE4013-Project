@@ -3,9 +3,13 @@ package main.java.shared.entity;
 import java.util.Arrays;
 
 public enum Currency {
+//    For error or invalid currency
+    ZZZ("ZZZ"),
+//    Valid currency
     USD("USD"),
     SGD("SGD"),
     RMB("RMB");
+
 
     private final String name;
 
