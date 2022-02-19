@@ -25,8 +25,8 @@ public class AccountsList {
         acl.add(i2, aci2);
         System.out.println(acl);
         acl.delete(aci.getAccountNum(), "12345678", "abc");
-        acl.delete(aci2.getAccountNum(), "12443", "abc");
         System.out.println(acl);
+        System.out.println(acl.getAccountInfo(1));
     }
 
     public int generateAccountNum() {
@@ -53,8 +53,10 @@ public class AccountsList {
         return accInfo;
     }
 
-    public AccountInfo getAccountInfo(int accountNum) {
-        return this.db.getOrDefault(accountNum, null);
+    public AccountInfo getAccountInfo(int accountNum) throws Exception {
+        AccountInfo aci =  this.db.getOrDefault(accountNum, null);
+        if (aci == null) throw new Exception(String.format("Account %d does not exist", accountNum));
+        else return aci;
     }
 
     @Override
