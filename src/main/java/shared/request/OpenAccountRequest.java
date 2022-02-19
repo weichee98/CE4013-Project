@@ -78,11 +78,6 @@ public class OpenAccountRequest extends RequestBody {
     }
 
     @Override
-    public int getBodyLength() {
-        return (this.holderName.length() + 1) + (this.password.length() + 1) + 1 + 4;
-    }
-
-    @Override
     public byte[] toBytes() {
         byte[] holderNameByte = (this.holderName + "\0").getBytes();
         byte[] passwordByte = (this.password + "\0").getBytes();

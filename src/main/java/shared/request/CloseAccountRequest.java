@@ -66,11 +66,6 @@ public class CloseAccountRequest extends RequestBody {
     }
 
     @Override
-    public int getBodyLength() {
-        return 4 + (this.holderName.length() + 1) + (this.password.length() + 1);
-    }
-
-    @Override
     public byte[] toBytes() {
         byte[] accountNumberByte = ByteBuffer.allocate(4)
                 .putInt(this.accountNumber).array();
