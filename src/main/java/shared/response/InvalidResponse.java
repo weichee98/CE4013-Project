@@ -3,8 +3,7 @@ package main.java.shared.response;
 public class InvalidResponse extends ResponseBody {
 
     public InvalidResponse(String errorMessage) {
-        this.status = false;
-        this.errorMessage = errorMessage;
+        super(false, errorMessage);
     }
 
     @Override
