@@ -24,7 +24,7 @@ public class DepositAndWithdrawResponse extends ResponseBody {
         return new DepositAndWithdrawResponse(false, errorMessage, 0, "", Currency.ZZZ, 0F);
     }
 
-    public static DepositAndWithdrawResponse success(int accountNumber, String holderName, String password, Currency currency, float balance) {
+    public static DepositAndWithdrawResponse success(int accountNumber, String holderName, Currency currency, float balance) {
         return new DepositAndWithdrawResponse(true, "", accountNumber, holderName, currency, balance);
     }
 
