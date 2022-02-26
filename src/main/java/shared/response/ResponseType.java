@@ -6,6 +6,8 @@ public enum ResponseType {
     CLOSE_ACCOUNT,
     DEPOSIT,
     WITHDRAW,
+    TRANSFER,
+    QUERY_ACCOUNT,
     SUBSCRIBE_STATUS,
     SUBSCRIBE_UPDATE;
 

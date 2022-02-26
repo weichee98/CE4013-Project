@@ -6,6 +6,8 @@ public enum RequestType {
     CLOSE_ACCOUNT,
     DEPOSIT,
     WITHDRAW,
+    TRANSFER,
+    QUERY_ACCOUNT,
     SUBSCRIBE;
 
     public static RequestType get(int id) {
