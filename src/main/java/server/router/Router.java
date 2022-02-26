@@ -50,7 +50,7 @@ public class Router {
         }
 
         byte[] respBodyBytes = respBody.toBytes();
-        ResponseHeader respHeader = new ResponseHeader(UUID.randomUUID(), respType, respBodyBytes.length);
+        ResponseHeader respHeader = new ResponseHeader(reqHeader.getUUID(), respType, respBodyBytes.length);
         Response resp = new Response(respHeader, respBodyBytes);
         return new UDPMessage(address, resp.toBytes());
     }
