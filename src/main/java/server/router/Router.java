@@ -45,18 +45,22 @@ public class Router {
                 reqBody = DepositAndWithdrawRequest.fromBytes(reqBodyBytes);
                 respType = ResponseType.DEPOSIT;
                 respBody = bs.depositAndWithdraw((DepositAndWithdrawRequest) reqBody);
+                break;
             case WITHDRAW:
                 reqBody = DepositAndWithdrawRequest.fromBytes(reqBodyBytes);
                 respType = ResponseType.WITHDRAW;
                 respBody = bs.depositAndWithdraw((DepositAndWithdrawRequest) reqBody);
+                break;
             case TRANSFER:
                 reqBody = TransferRequest.fromBytes(reqBodyBytes);
                 respType = ResponseType.TRANSFER;
                 respBody = bs.transfer((TransferRequest) reqBody);
+                break;
             case QUERY_ACCOUNT:
                 reqBody = QueryAccountRequest.fromBytes(reqBodyBytes);
                 respType = ResponseType.QUERY_ACCOUNT;
                 respBody = bs.queryAccount((QueryAccountRequest) reqBody);
+                break;
             default:
                 respType = ResponseType.INVALID;
                 respBody = new InvalidResponse(
