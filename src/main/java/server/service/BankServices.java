@@ -74,7 +74,7 @@ public class BankServices {
             accountInfo.validateHolderName(holderName);
             accountInfo.validateCurrency(currency);
             accountInfo.checkEnoughBalance(amount);
-            float newBalance = accountInfo.getBalance() - amount;
+            float newBalance = accountInfo.getBalance() + amount;
             accountInfo.setBalance(newBalance);
 
             this.subscription.broadcastMessage(
