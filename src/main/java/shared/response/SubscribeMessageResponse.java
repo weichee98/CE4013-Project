@@ -12,6 +12,12 @@ public class SubscribeMessageResponse extends ResponseBody {
         this.subscribeMessage = subscribeMessage;
     }
 
+    public static SubscribeMessageResponse fromBytes(byte[] bytes) {
+        int subscribeMessageEnd = Tools.findEndOfString(bytes, 0);
+        String subscribeMessage = new String(Arrays.copyOfRange(bytes, 0, subscribeMessageEnd));
+        return new SubscribeMessageResponse(subscribeMessage);
+    }
+
     public String getSubscribeMessage() {
         return subscribeMessage;
     }
@@ -19,11 +25,5 @@ public class SubscribeMessageResponse extends ResponseBody {
     @Override
     public byte[] toBytes() {
         return (this.subscribeMessage + "\0").getBytes();
-    }
-
-    public static SubscribeMessageResponse fromBytes(byte[] bytes) {
-        int subscribeMessageEnd = Tools.findEndOfString(bytes, 0);
-        String subscribeMessage = new String(Arrays.copyOfRange(bytes, 0, subscribeMessageEnd));
-        return new SubscribeMessageResponse(subscribeMessage);
     }
 }

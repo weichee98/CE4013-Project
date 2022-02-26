@@ -4,7 +4,6 @@ import main.java.server.entity.AccountInfo;
 import main.java.shared.entity.Currency;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class AccountsList {
     private static final int minAccountNum = 10000;
@@ -49,7 +48,7 @@ public class AccountsList {
     }
 
     public AccountInfo getAccountInfo(int accountNum) throws Exception {
-        AccountInfo aci =  this.db.getOrDefault(accountNum, null);
+        AccountInfo aci = this.db.getOrDefault(accountNum, null);
         if (aci == null) throw new Exception(String.format("Account %d does not exist", accountNum));
         else return aci;
     }

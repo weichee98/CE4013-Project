@@ -22,6 +22,14 @@ public class ResponseHeader extends Header {
         return new ResponseHeader(uuid, responseType, bodyLength);
     }
 
+    public static void main(String[] args) {
+        ResponseHeader header = new ResponseHeader(UUID.randomUUID(), ResponseType.OPEN_ACCOUNT, 78);
+        System.out.println(header);
+        byte[] bytes = header.toBytes();
+        ResponseHeader newHeader = ResponseHeader.fromBytes(bytes);
+        System.out.println(newHeader);
+    }
+
     public ResponseType getResponseType() {
         return this.responseType;
     }
@@ -45,13 +53,5 @@ public class ResponseHeader extends Header {
                 "uuid=" + this.getUUID() + ", " +
                 "bodyLength=" + this.getBodyLength() +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        ResponseHeader header = new ResponseHeader(UUID.randomUUID(), ResponseType.OPEN_ACCOUNT, 78);
-        System.out.println(header);
-        byte[] bytes = header.toBytes();
-        ResponseHeader newHeader = ResponseHeader.fromBytes(bytes);
-        System.out.println(newHeader);
     }
 }

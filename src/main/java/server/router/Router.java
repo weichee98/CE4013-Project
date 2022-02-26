@@ -6,7 +6,6 @@ import main.java.shared.response.*;
 import main.java.shared.udp.UDPMessage;
 
 import java.net.SocketAddress;
-import java.util.UUID;
 
 public class Router {
     private final BankServices bs;

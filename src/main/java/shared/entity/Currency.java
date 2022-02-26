@@ -3,9 +3,9 @@ package main.java.shared.entity;
 import java.util.Arrays;
 
 public enum Currency {
-//    For error or invalid currency
+    //    For error or invalid currency
     ZZZ("ZZZ"),
-//    Valid currency
+    //    Valid currency
     USD("USD"),
     SGD("SGD"),
     RMB("RMB");
@@ -17,8 +17,9 @@ public enum Currency {
         this.name = name;
     }
 
-    public byte toByte() {
-        return (byte) this.ordinal();
+    public static Currency[] getValidCurrencies() {
+        Currency[] allCurrencies = Currency.values();
+        return Arrays.copyOfRange(allCurrencies, 1, allCurrencies.length);
     }
 
     public static Currency fromByte(byte currencyByte) {
@@ -29,14 +30,18 @@ public enum Currency {
         }
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
-
     public static void main(String[] args) {
         System.out.println(Currency.valueOf("USD"));
         Currency[] allCurrencies = Currency.values();
         System.out.println(Arrays.toString(allCurrencies));
+    }
+
+    public byte toByte() {
+        return (byte) this.ordinal();
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

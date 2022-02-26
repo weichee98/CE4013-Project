@@ -22,6 +22,14 @@ public class RequestHeader extends Header {
         return new RequestHeader(uuid, requestType, bodyLength);
     }
 
+    public static void main(String[] args) {
+        RequestHeader header = new RequestHeader(UUID.randomUUID(), RequestType.OPEN_ACCOUNT, 78);
+        System.out.println(header);
+        byte[] bytes = header.toBytes();
+        RequestHeader newHeader = RequestHeader.fromBytes(bytes);
+        System.out.println(newHeader);
+    }
+
     public RequestType getRequestType() {
         return this.requestType;
     }
@@ -45,13 +53,5 @@ public class RequestHeader extends Header {
                 "uuid=" + this.getUUID() + ", " +
                 "bodyLength=" + this.getBodyLength() +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        RequestHeader header = new RequestHeader(UUID.randomUUID(), RequestType.OPEN_ACCOUNT, 78);
-        System.out.println(header);
-        byte[] bytes = header.toBytes();
-        RequestHeader newHeader = RequestHeader.fromBytes(bytes);
-        System.out.println(newHeader);
     }
 }

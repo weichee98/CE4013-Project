@@ -1,12 +1,8 @@
 package main.java.client;
 
 import main.java.shared.entity.Currency;
-import main.java.shared.request.OpenAccountRequest;
-import main.java.shared.request.RequestType;
-import main.java.shared.request.SubscribeRequest;
-import main.java.shared.response.OpenAccountResponse;
-import main.java.shared.response.Response;
-import main.java.shared.response.SubscribeStatusResponse;
+import main.java.shared.request.*;
+import main.java.shared.response.*;
 
 import java.util.Arrays;
 
@@ -29,6 +25,10 @@ public class BankServicesUserInterface {
         return SafeScanner.readLine("Enter name = ");
     }
 
+    private String askName(String label) {
+        return SafeScanner.readLine(String.format("%s = ", label));
+    }
+
     private String askPassword() {
         String password = SafeScanner.readLine(
                 String.format("Enter password (%d characters) = ", PASSWORD_LENGTH)
@@ -46,9 +46,13 @@ public class BankServicesUserInterface {
         return SafeScanner.readInt("Enter account number = ");
     }
 
+    private int askAccountNumber(String label) {
+        return SafeScanner.readInt(String.format("%s = ", label));
+    }
+
     private Currency askCurrency() {
         System.out.println(
-                String.format("Your currency choices: %s", Arrays.toString(Currency.values()))
+                String.format("Your currency choices: %s", Arrays.toString(Currency.getValidCurrencies()))
         );
         String currencyStr = SafeScanner.readLine("Enter currency = ").toUpperCase();
         try {
@@ -96,6 +100,139 @@ public class BankServicesUserInterface {
         } else {
             System.out.println(
                     String.format("Failed to create bank account: %s", respBody.getErrorMessage())
+            );
+        }
+    }
+
+    public void runCloseAccountUI() {
+        this.printHeader("Close Account");
+        int accountNumber = this.askAccountNumber();
+        String holderName = this.askName();
+        String password = this.askPassword();
+        Response resp = client.request(
+                RequestType.CLOSE_ACCOUNT,
+                new CloseAccountRequest(accountNumber, holderName, password)
+        );
+        CloseAccountResponse respBody = CloseAccountResponse.fromBytes(resp.getRespBodyBytes());
+        if (respBody.isStatus()) {
+            System.out.println(
+                    String.format("Successfully closed bank account %d", respBody.getAccountNumber())
+            );
+        } else {
+            System.out.println(
+                    String.format("Failed to close bank account: %s", respBody.getErrorMessage())
+            );
+        }
+    }
+
+    public void runDepositUI() {
+        this.printHeader("Deposit");
+        int accountNumber = this.askAccountNumber();
+        String holderName = this.askName();
+        String password = this.askPassword();
+        Currency currency = this.askCurrency();
+        float amount = this.askAmount();
+        Response resp = client.request(
+                RequestType.DEPOSIT,
+                new DepositAndWithdrawRequest(accountNumber, holderName, password, currency, amount)
+        );
+        DepositAndWithdrawResponse respBody = DepositAndWithdrawResponse.fromBytes(resp.getRespBodyBytes());
+        if (respBody.isStatus()) {
+            System.out.println(
+                    String.format(
+                            "Successfully deposited %s%.2f to bank account %d\nBalance: %s%.2f",
+                            respBody.getCurrency(), amount, respBody.getAccountNumber(),
+                            respBody.getCurrency(), respBody.getBalance()
+                    )
+            );
+        } else {
+            System.out.println(
+                    String.format("Failed to deposit: %s", respBody.getErrorMessage())
+            );
+        }
+    }
+
+    public void runWithdrawUI() {
+        this.printHeader("Withdraw");
+        int accountNumber = this.askAccountNumber();
+        String holderName = this.askName();
+        String password = this.askPassword();
+        Currency currency = this.askCurrency();
+        float amount = this.askAmount();
+        Response resp = client.request(
+                RequestType.WITHDRAW,
+                new DepositAndWithdrawRequest(accountNumber, holderName, password, currency, -amount)
+        );
+        DepositAndWithdrawResponse respBody = DepositAndWithdrawResponse.fromBytes(resp.getRespBodyBytes());
+        if (respBody.isStatus()) {
+            System.out.println(
+                    String.format(
+                            "Successfully withdraw %s%.2f from bank account %d\nBalance: %s%.2f",
+                            respBody.getCurrency(), amount, respBody.getAccountNumber(),
+                            respBody.getCurrency(), respBody.getBalance()
+                    )
+            );
+        } else {
+            System.out.println(
+                    String.format("Failed to withdraw: %s", respBody.getErrorMessage())
+            );
+        }
+    }
+
+    public void runTransferUI() {
+        this.printHeader("Transfer");
+        int targetAccountNumber = this.askAccountNumber("Enter recepient account number");
+        String targetHolderName = this.askName("Enter recepient name");
+        int accountNumber = this.askAccountNumber("Enter sender account number");
+        String holderName = this.askName("Enter sender name");
+        String password = this.askPassword();
+        Currency currency = this.askCurrency();
+        float amount = this.askAmount();
+        Response resp = client.request(
+                RequestType.TRANSFER,
+                new TransferRequest(
+                        accountNumber, holderName, password, targetAccountNumber, targetHolderName, currency, amount
+                )
+        );
+        TransferResponse respBody = TransferResponse.fromBytes(resp.getRespBodyBytes());
+        if (respBody.isStatus()) {
+            System.out.println(
+                    String.format(
+                            "Successfully transfer %s%.2f from bank account %d to %d",
+                            respBody.getCurrency(), respBody.getAmount(),
+                            respBody.getAccountNumber(), respBody.getTargetAccountNumber()
+                    )
+            );
+        } else {
+            System.out.println(
+                    String.format("Failed to transfer: %s", respBody.getErrorMessage())
+            );
+        }
+    }
+
+    public void runQueryAccountUI() {
+        this.printHeader("Query Account");
+        int accountNumber = this.askAccountNumber();
+        String holderName = this.askName();
+        String password = this.askPassword();
+        Response resp = client.request(
+                RequestType.QUERY_ACCOUNT,
+                new QueryAccountRequest(
+                        accountNumber, holderName, password
+                )
+        );
+        QueryAccountResponse respBody = QueryAccountResponse.fromBytes(resp.getRespBodyBytes());
+        if (respBody.isStatus()) {
+            System.out.println(
+                    String.format(
+                            "Query Result:\n\tAccount Number: %d\n\tHolder Name: %s\n\tBalance: %s%.2f",
+                            respBody.getAccountNumber(), respBody.getHolderName(),
+                            respBody.getCurrency(), respBody.getBalance()
+                    )
+            );
+        } else {
+            System.out.println(
+                    String.format("Failed to query account: %s", respBody.getErrorMessage())
             );
         }
     }
