@@ -9,19 +9,22 @@ import main.java.shared.udp.UDPMessage;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.util.logging.Logger;
 
 public class Main {
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) throws SocketException {
         final String host = "0.0.0.0";
         final int port = 12740;
         final int bufferSize = 1024;
-        final float packetLossRate = (float) 0.0;
+        final float packetLossRate = (float) 0.1;
 
         UDPClient udpClient = new UDPClient(
                 new DatagramSocket(new InetSocketAddress(host, port)),
                 bufferSize
         );
-        System.out.println(String.format("Listening on udp://%s:%d", host, port));
+        LOGGER.info(String.format("Listening on udp://%s:%d", host, port));
 
         Subscription sub = new Subscription(udpClient);
         BankServices bs = new BankServices(sub);
@@ -30,17 +33,20 @@ public class Main {
         for (; ; ) {
             try (UDPMessage req = udpClient.receive()) {
                 if (Math.random() < packetLossRate) {
-                    System.out.println(String.format("Dropped a request from %s", req.getAddress()));
+                    LOGGER.info(String.format("Dropped a request from %s", req.getAddress()));
                     continue;
+                } else {
+                    LOGGER.info(String.format("Received a request from %s", req.getAddress()));
                 }
                 UDPMessage resp = router.route(req);
                 if (Math.random() < packetLossRate) {
-                    System.out.println(String.format("Dropped a request from %s", resp.getAddress()));
+                    LOGGER.info(String.format("Dropped a response to %s", resp.getAddress()));
                 } else {
                     udpClient.send(resp);
+                    LOGGER.info(String.format("Sent a response to %s", resp.getAddress()));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.severe(e.getMessage());
             }
         }
     }
