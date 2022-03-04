@@ -18,7 +18,8 @@ public class Main {
         final String host = "0.0.0.0";
         final int port = 12740;
         final int bufferSize = 1024;
-        final float packetLossRate = (float) 0.1;
+        final float requestPacketLossRate = (float) 0.1;
+        final float responsePacketLossRate = (float) 0.1;
 
         final InetSocketAddress serverAddress = new InetSocketAddress(host, port);
         UDPClient udpClient = new UDPClient(
@@ -33,14 +34,14 @@ public class Main {
 
         for (; ; ) {
             try (UDPMessage req = udpClient.receive()) {
-                if (Math.random() < packetLossRate) {
+                if (Math.random() < requestPacketLossRate) {
                     LOGGER.info(String.format("Dropped a request from %s", req.getAddress()));
                     continue;
                 } else {
                     LOGGER.info(String.format("Received a request from %s", req.getAddress()));
                 }
                 UDPMessage resp = router.route(req);
-                if (Math.random() < packetLossRate) {
+                if (Math.random() < responsePacketLossRate) {
                     LOGGER.info(String.format("Dropped a response to %s", resp.getAddress()));
                 } else {
                     udpClient.send(resp);
