@@ -20,11 +20,12 @@ public class Main {
         final int bufferSize = 1024;
         final float packetLossRate = (float) 0.1;
 
+        final InetSocketAddress serverAddress = new InetSocketAddress(host, port);
         UDPClient udpClient = new UDPClient(
-                new DatagramSocket(new InetSocketAddress(host, port)),
+                new DatagramSocket(serverAddress),
                 bufferSize
         );
-        LOGGER.info(String.format("Listening on udp://%s:%d", host, port));
+        LOGGER.info(String.format("Listening on udp:/%s", serverAddress));
 
         Subscription sub = new Subscription(udpClient);
         BankServices bs = new BankServices(sub);
