@@ -77,10 +77,13 @@ public class BankServices {
             float newBalance = accountInfo.getBalance() + amount;
             accountInfo.setBalance(newBalance);
 
-            this.subscription.broadcastMessage(
-                    String.format("New deposit/withdrawal %s", req)
+            DepositAndWithdrawResponse resp = DepositAndWithdrawResponse.success(
+                    accountNumber, holderName, currency, newBalance
             );
-            return DepositAndWithdrawResponse.success(accountNumber, holderName, currency, newBalance);
+            this.subscription.broadcastMessage(
+                    String.format("New deposit/withdrawal %s", resp)
+            );
+            return resp;
         } catch (Exception e) {
             return DepositAndWithdrawResponse.error(e.getMessage());
         }
@@ -96,9 +99,11 @@ public class BankServices {
             accountInfo.validateHolderName(holderName);
 
             this.subscription.broadcastMessage(
-                    String.format("Account information %s", accountInfo)
+                    String.format("Query account information %s", accountInfo)
             );
-            return QueryAccountResponse.success(accountNumber, holderName, accountInfo.getCurrency(), accountInfo.getBalance());
+            return QueryAccountResponse.success(
+                    accountNumber, holderName, accountInfo.getCurrency(), accountInfo.getBalance()
+            );
         } catch (Exception e) {
             return QueryAccountResponse.error(e.getMessage());
         }
@@ -130,7 +135,9 @@ public class BankServices {
                 throw new Exception(String.format("Recipient does not have account in currency %s", currency));
             targetAccountInfo.setBalance(targetAccountInfo.getBalance() + amount);
 
-            TransferResponse resp = TransferResponse.success(accountNumber, holderName, targetAccountNumber, targetHolderName, currency, amount);
+            TransferResponse resp = TransferResponse.success(
+                    accountNumber, holderName, targetAccountNumber, targetHolderName, currency, amount
+            );
 
             this.subscription.broadcastMessage(
                     String.format("Transaction completed %s", resp)
