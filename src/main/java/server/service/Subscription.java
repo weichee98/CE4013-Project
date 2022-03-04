@@ -28,6 +28,7 @@ public class Subscription {
             throw new Exception("interval cannot be less than or equals to 0");
         }
         subscribers.put(address, Instant.now().plusSeconds(interval));
+        this.broadcastMessage(String.format("Added subscriber: %s", address));
         LOGGER.info(String.format("Added subscriber: %s", address));
     }
 
