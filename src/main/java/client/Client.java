@@ -30,7 +30,7 @@ public class Client {
         this.maxAttempts = maxAttempts;
     }
 
-    public Response request(RequestType requestType, RequestBody requestBody) {
+    public Response request(RequestType requestType, RequestBody requestBody) throws RuntimeException {
         byte[] bytes = requestBody.toBytes();
         RequestHeader reqHeader = new RequestHeader(UUID.randomUUID(), requestType, bytes.length);
         Request req = new Request(reqHeader, bytes);

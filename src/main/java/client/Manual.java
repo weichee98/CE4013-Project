@@ -8,13 +8,12 @@ public enum Manual {
     WITHDRAW("Withdraw from a bank account"),
     TRANSFER("Transfer money to another bank account"),
     QUERY_ACCOUNT("Query information about a bank account"),
-    SUBSCRIBE("Subscribe to updates form all accounts"),
-    PRINT_MANUAL("Print Manual");
+    SUBSCRIBE("Subscribe to updates form all accounts");
 
-    private final String descritpion;
+    private final String description;
 
     Manual(String description) {
-        this.descritpion = description;
+        this.description = description;
     }
 
     public static Manual get(int id) {
@@ -27,8 +26,10 @@ public enum Manual {
 
     public static void printManual() {
         final String divider = "=".repeat(64);
-        System.out.println(divider);
         Manual[] manuals = Manual.values();
+
+        System.out.println();
+        System.out.println(divider);
         System.out.println(
                 String.format(
                         "Please choose a service by typing [%d-%d]:",
@@ -38,7 +39,7 @@ public enum Manual {
         for (int i = 0; i < manuals.length; i++) {
             Manual manual = manuals[i];
             System.out.println(
-                    String.format("%d: %s", i, manual.getDescritpion())
+                    String.format("%d: %s", i, manual.getDescription())
             );
         }
         System.out.println(divider);
@@ -48,8 +49,8 @@ public enum Manual {
         printManual();
     }
 
-    public String getDescritpion() {
-        return descritpion;
+    public String getDescription() {
+        return description;
     }
 
 }

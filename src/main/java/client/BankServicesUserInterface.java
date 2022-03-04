@@ -82,7 +82,7 @@ public class BankServicesUserInterface {
         return interval;
     }
 
-    public void runOpenAccountUI() {
+    public void runOpenAccountUI() throws RuntimeException {
         this.printHeader("Open Account");
         String holderName = this.askName();
         String password = this.askPassword();
@@ -104,7 +104,7 @@ public class BankServicesUserInterface {
         }
     }
 
-    public void runCloseAccountUI() {
+    public void runCloseAccountUI() throws RuntimeException {
         this.printHeader("Close Account");
         int accountNumber = this.askAccountNumber();
         String holderName = this.askName();
@@ -125,7 +125,7 @@ public class BankServicesUserInterface {
         }
     }
 
-    public void runDepositUI() {
+    public void runDepositUI() throws RuntimeException {
         this.printHeader("Deposit");
         int accountNumber = this.askAccountNumber();
         String holderName = this.askName();
@@ -152,7 +152,7 @@ public class BankServicesUserInterface {
         }
     }
 
-    public void runWithdrawUI() {
+    public void runWithdrawUI() throws RuntimeException {
         this.printHeader("Withdraw");
         int accountNumber = this.askAccountNumber();
         String holderName = this.askName();
@@ -179,7 +179,7 @@ public class BankServicesUserInterface {
         }
     }
 
-    public void runTransferUI() {
+    public void runTransferUI() throws RuntimeException {
         this.printHeader("Transfer");
         int targetAccountNumber = this.askAccountNumber("Enter recepient account number");
         String targetHolderName = this.askName("Enter recepient name");
@@ -210,7 +210,7 @@ public class BankServicesUserInterface {
         }
     }
 
-    public void runQueryAccountUI() {
+    public void runQueryAccountUI() throws RuntimeException {
         this.printHeader("Query Account");
         int accountNumber = this.askAccountNumber();
         String holderName = this.askName();
@@ -237,7 +237,7 @@ public class BankServicesUserInterface {
         }
     }
 
-    public void runSubscribeUI() {
+    public void runSubscribeUI() throws RuntimeException {
         this.printHeader("Subscribe to Updates");
         int interval = this.askInterval();
 
