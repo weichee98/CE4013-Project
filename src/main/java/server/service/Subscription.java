@@ -12,8 +12,10 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class Subscription {
+    private static final Logger LOGGER = Logger.getLogger(Subscription.class.getName());
     private final Map<SocketAddress, Instant> subscribers = new HashMap<>();
     private final UDPClient udpClient;
 
@@ -26,11 +28,18 @@ public class Subscription {
             throw new Exception("interval cannot be less than or equals to 0");
         }
         subscribers.put(address, Instant.now().plusSeconds(interval));
+        LOGGER.info(String.format("Added subscriber: %s", address));
     }
 
     private void removeExpiredSubscribers() {
         Instant currentTime = Instant.now();
-        subscribers.entrySet().removeIf(x -> x.getValue().isBefore(currentTime));
+        subscribers.entrySet().removeIf(x -> {
+            boolean expired = x.getValue().isBefore(currentTime);
+            if (expired) {
+                LOGGER.info(String.format("Removed subscriber: %s", x.getKey()));
+            }
+            return expired;
+        });
     }
 
     public void broadcastMessage(String message) {
