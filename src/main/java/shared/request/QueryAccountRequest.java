@@ -97,7 +97,6 @@ public class QueryAccountRequest extends RequestBody {
         return "CloseAccountRequest{" +
                 "accountNumber=" + accountNumber +
                 ", holderName='" + holderName + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }

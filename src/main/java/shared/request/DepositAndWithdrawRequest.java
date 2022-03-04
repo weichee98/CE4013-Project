@@ -55,7 +55,6 @@ public class DepositAndWithdrawRequest extends RequestBody {
         return "DepositAndWithdrawRequest{" +
                 "accountNumber=" + accountNumber +
                 ", holderName='" + holderName + '\'' +
-                ", password='" + password + '\'' +
                 ", currency=" + currency +
                 ", amount=" + amount +
                 '}';

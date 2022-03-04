@@ -112,7 +112,6 @@ public class OpenAccountRequest extends RequestBody {
     public String toString() {
         return "OpenAccountRequest{" +
                 "holderName='" + holderName + '\'' +
-                ", password='" + password + '\'' +
                 ", currency=" + currency +
                 ", balance=" + balance +
                 '}';

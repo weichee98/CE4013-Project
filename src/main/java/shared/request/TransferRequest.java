@@ -67,7 +67,6 @@ public class TransferRequest extends RequestBody {
         return "TransferRequest{" +
                 "accountNumber=" + accountNumber +
                 ", holderName='" + holderName + '\'' +
-                ", password='" + password + '\'' +
                 ", targetAccountNumber=" + targetAccountNumber +
                 ", targetHolderName='" + targetHolderName + '\'' +
                 ", currency=" + currency +
