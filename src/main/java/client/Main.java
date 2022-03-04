@@ -2,8 +2,10 @@ package main.java.client;
 
 import main.java.shared.udp.UDPClient;
 
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.SocketException;
 import java.time.Duration;
 
@@ -17,10 +19,10 @@ public class Main {
         return choice;
     }
 
-    public static void main(String[] args) throws SocketException {
+    public static void main(String[] args) throws IOException {
         final String clientHost = "0.0.0.0";
         final String serverHost = "127.0.0.1";
-        final int clientPort = 12741;
+        final int clientPort = new ServerSocket(0).getLocalPort();
         final int serverPort = 12740;
         final Duration timeout = Duration.ofSeconds(5);
         final int maxAttempts = 5;
