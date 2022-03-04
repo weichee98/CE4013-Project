@@ -9,15 +9,23 @@ import java.net.SocketAddress;
 
 public class Router {
     private final BankServices bs;
+    private final LRUCache cache;
 
-    public Router(BankServices bs) {
+    public Router(BankServices bs, int cacheCapacity) {
         this.bs = bs;
+        this.cache = new LRUCache(cacheCapacity);
     }
 
     public UDPMessage route(UDPMessage rawReqMessage) {
         SocketAddress address = rawReqMessage.getAddress();
         Request req = Request.fromBytes(rawReqMessage.getBytes());
         RequestHeader reqHeader = req.getHeader();
+
+        UDPMessage respMessage = this.cache.get(reqHeader.getUUID());
+        if (respMessage != null) {
+            return respMessage;
+        }
+
         byte[] reqBodyBytes = req.getReqBodyBytes();
 
         RequestBody reqBody;
@@ -71,6 +79,8 @@ public class Router {
         byte[] respBodyBytes = respBody.toBytes();
         ResponseHeader respHeader = new ResponseHeader(reqHeader.getUUID(), respType, respBodyBytes.length);
         Response resp = new Response(respHeader, respBodyBytes);
-        return new UDPMessage(address, resp.toBytes());
+        respMessage = new UDPMessage(address, resp.toBytes());
+        this.cache.set(respHeader.getUUID(), respMessage);
+        return respMessage;
     }
 }

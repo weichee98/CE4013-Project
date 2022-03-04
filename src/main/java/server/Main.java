@@ -20,6 +20,7 @@ public class Main {
         final int bufferSize = 1024;
         final float requestPacketLossRate = (float) 0.1;
         final float responsePacketLossRate = (float) 0.1;
+        final boolean atMostOnce = true;
 
         final InetSocketAddress serverAddress = new InetSocketAddress(host, port);
         UDPClient udpClient = new UDPClient(
@@ -30,7 +31,7 @@ public class Main {
 
         Subscription sub = new Subscription(udpClient);
         BankServices bs = new BankServices(sub);
-        Router router = new Router(bs);
+        Router router = new Router(bs, atMostOnce? 1024 : 0);
 
         for (; ; ) {
             try (UDPMessage req = udpClient.receive()) {
