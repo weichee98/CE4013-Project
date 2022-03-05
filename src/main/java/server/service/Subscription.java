@@ -54,9 +54,12 @@ public class Subscription {
 
         removeExpiredSubscribers();
         subscribers.forEach((socketAddress, x) -> {
-            this.udpClient.send(new UDPMessage(
-                    socketAddress, responseBytes
-            ));
+            try {
+                this.udpClient.send(new UDPMessage(
+                        socketAddress, responseBytes
+                ));
+            } catch (RuntimeException e) {
+            }
         });
     }
 }

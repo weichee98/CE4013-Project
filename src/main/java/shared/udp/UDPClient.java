@@ -24,7 +24,7 @@ public class UDPClient {
         }
     }
 
-    public void send(UDPMessage message) {
+    public void send(UDPMessage message) throws RuntimeException {
         try {
             byte[] bytes = message.getBytes();
             socket.send(new DatagramPacket(bytes, bytes.length, message.getAddress()));
