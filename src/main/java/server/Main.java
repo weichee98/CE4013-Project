@@ -6,15 +6,13 @@ import main.java.server.service.Subscription;
 import main.java.shared.udp.UDPClient;
 import main.java.shared.udp.UDPMessage;
 
-import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.logging.Logger;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    public static void main(String[] args) throws SocketException {
+    public static void main(String[] args) throws SocketException, UnknownHostException {
         final String host = "0.0.0.0";
         final int port = 12740;
         final int bufferSize = 1024;
@@ -27,7 +25,7 @@ public class Main {
                 new DatagramSocket(serverAddress),
                 bufferSize
         );
-        LOGGER.info(String.format("Listening on udp:/%s", serverAddress));
+        LOGGER.info(String.format("Listening on udp://%s:%s", InetAddress.getLocalHost().getHostAddress(), port));
 
         Subscription sub = new Subscription(udpClient);
         BankServices bs = new BankServices(sub);
