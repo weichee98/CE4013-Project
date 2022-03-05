@@ -9,16 +9,13 @@ import main.java.shared.udp.UDPMessage;
 import java.net.*;
 import java.util.logging.Logger;
 
-public class Main {
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+public class ServerRunner {
+    private static final Logger LOGGER = Logger.getLogger(ServerRunner.class.getName());
 
-    public static void main(String[] args) throws SocketException, UnknownHostException {
+    public ServerRunner (float requestPacketLossRate, float responsePacketLossRate, boolean atMostOnce) throws SocketException, UnknownHostException {
         final String host = "0.0.0.0";
         final int port = 12740;
         final int bufferSize = 1024;
-        final float requestPacketLossRate = (float) 0.1;
-        final float responsePacketLossRate = (float) 0.1;
-        final boolean atMostOnce = true;
 
         final InetSocketAddress serverAddress = new InetSocketAddress(host, port);
         UDPClient udpClient = new UDPClient(
