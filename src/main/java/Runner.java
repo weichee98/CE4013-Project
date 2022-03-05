@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Runner {
     private static boolean isClient = true;
-    private static String serverIp = "0.0.0.0";
+    private static String serverIp = "127.0.0.1";
     private static float requestLoss = 0.1F;
     private static float responseLoss = 0.1F;
     private static boolean atMostOnce = true;
